@@ -682,9 +682,15 @@
 
   function imgOrPlaceholder(imageUrl, cls, emoji='🎁'){
     if(imageUrl){
-      return `<img class="${cls}" src="${imageUrl}" onerror="this.parentNode.innerHTML='<div class=\\'${cls.replace('img','placeholder')}\\'>${emoji}</div>'" loading="lazy"/>`;
+      const placeholderCls = cls === 'featured-img' ? 'featured-img-placeholder'
+                           : cls === 'grid-thumb'    ? 'grid-thumb-placeholder'
+                           : cls + '-placeholder';
+      return `<img class="${cls}" src="${imageUrl}" onerror="this.outerHTML='<div class=\\'${placeholderCls}\\'>${emoji}</div>'" loading="lazy"/>`;
     }
-    return `<div class="${cls.replace('-img','-img-placeholder').replace('grid-thumb','grid-thumb-placeholder')}">${emoji}</div>`;
+    const placeholderCls = cls === 'featured-img' ? 'featured-img-placeholder'
+                         : cls === 'grid-thumb'    ? 'grid-thumb-placeholder'
+                         : cls + '-placeholder';
+    return `<div class="${placeholderCls}">${emoji}</div>`;
   }
 
   function getEmoji(cat){
@@ -714,10 +720,7 @@
     }
     featuredList.innerHTML = featured.map((p,i)=>`
       <a class="featured-card" style="animation-delay:${i*0.08}s" onclick="openPost('${p.id}')">
-        ${p.imageUrl
-          ? `<img class="featured-img" src="${p.imageUrl}" onerror="this.style.display='none'" loading="lazy"/>`
-          : `<div class="featured-img-placeholder">${getEmoji(p.category)}</div>`
-        }
+        ${imgOrPlaceholder(p.imageUrl, 'featured-img', getEmoji(p.category))}
         <div class="featured-meta">
           <div class="featured-title">${p.title||'Untitled'}</div>
           <div class="post-info">
@@ -750,10 +753,7 @@
       card.style.animationDelay=`${(i%PAGE_SIZE)*0.06}s`;
       card.onclick=()=>openPost(p.id);
       card.innerHTML=`
-        ${p.imageUrl
-          ? `<img class="grid-thumb" src="${p.imageUrl}" onerror="this.remove()" loading="lazy"/>`
-          : `<div class="grid-thumb-placeholder">${getEmoji(p.category)}</div>`
-        }
+        ${imgOrPlaceholder(p.imageUrl, 'grid-thumb', getEmoji(p.category))}
         <div class="grid-body">
           <div class="grid-badges">${categoryBadge(p.category||'Post')}</div>
           <div class="grid-title">${p.title||'Untitled'}</div>
@@ -830,10 +830,7 @@
     // Set topbar title
     document.getElementById('modalTopTitle').textContent = p.title||'Post';
     mc.innerHTML=`
-      ${p.imageUrl
-        ? `<img class="modal-img" src="${p.imageUrl}" onerror="this.style.display='none'"/>`
-        : `<div class="modal-img-placeholder">${getEmoji(p.category)}</div>`
-      }
+      ${imgOrPlaceholder(p.imageUrl, 'modal-img', getEmoji(p.category))}
       <div class="modal-body">
         <div class="grid-badges" style="margin-bottom:12px">${categoryBadge(p.category||'Post')}</div>
         <div class="modal-title">${p.title||'Untitled'}</div>
