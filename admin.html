@@ -721,32 +721,41 @@ input:checked+.toggle-slider::before{transform:translateX(20px);background:#fff;
         <label class="flabel">Post Image (optional)</label>
         <!-- Upload tab buttons -->
         <div style="display:flex;gap:0;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-          <button type="button" id="tabUpload" onclick="switchImgTab('upload')" style="flex:1;padding:8px;font-size:0.78rem;font-family:'DM Sans',sans-serif;font-weight:600;background:var(--accent);color:#000;border:none;cursor:pointer;transition:background .2s;">📁 Upload File</button>
+          <button type="button" id="tabUpload" onclick="switchImgTab('upload')" style="flex:1;padding:8px;font-size:0.78rem;font-family:'DM Sans',sans-serif;font-weight:600;background:var(--accent);color:#000;border:none;cursor:pointer;transition:background .2s;">📁 Upload Image</button>
           <button type="button" id="tabUrl" onclick="switchImgTab('url')" style="flex:1;padding:8px;font-size:0.78rem;font-family:'DM Sans',sans-serif;font-weight:600;background:var(--surface2);color:var(--muted);border:none;cursor:pointer;transition:background .2s;">🔗 Image URL</button>
         </div>
-        <!-- File upload box -->
-        <div id="imgUploadTab" class="img-upload-box">
-          <input type="file" id="fImageFile" accept="image/*" onchange="handleFileSelect(event)"/>
-          <img id="imgFilePreview" src="" style="max-height:140px;border-radius:8px;margin-bottom:8px;display:none;width:100%;object-fit:cover;"/>
-          <div class="upload-hint" id="uploadHint">
-            <div style="font-size:1.8rem;margin-bottom:6px;">🖼️</div>
-            <div>Tap to select image or <span>browse</span></div>
-            <div style="font-size:0.7rem;margin-top:4px;color:var(--muted2);">JPG, PNG, GIF, WEBP — max 5MB</div>
+
+        <!-- ImgBB File upload box -->
+        <div id="imgUploadTab">
+          <div class="img-upload-box" id="imgDropZone" onclick="document.getElementById('fImageFile').click()">
+            <input type="file" id="fImageFile" accept="image/*" style="display:none" onchange="handleFileSelect(event)"/>
+            <img id="imgFilePreview" src="" style="max-height:140px;border-radius:8px;margin-bottom:8px;display:none;width:100%;object-fit:cover;"/>
+            <div class="upload-hint" id="uploadHint">
+              <div style="font-size:1.8rem;margin-bottom:6px;">🖼️</div>
+              <div>Tap to select image or <span>browse</span></div>
+              <div style="font-size:0.7rem;margin-top:4px;color:var(--muted2);">JPG, PNG, GIF, WEBP — max 32MB</div>
+            </div>
+          </div>
+          <!-- ImgBB Upload progress -->
+          <div id="uploadProgressWrap" style="display:none;margin-top:8px;">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:4px;">⬆️ Uploading to ImgBB… <span id="uploadPct">0</span>%</div>
+            <div style="background:var(--surface2);border-radius:4px;height:6px;overflow:hidden;">
+              <div id="uploadBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));width:0%;transition:width .3s;border-radius:4px;"></div>
+            </div>
+          </div>
+          <!-- Upload success info -->
+          <div id="imgbbSuccess" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(0,208,132,0.1);border:1px solid rgba(0,208,132,0.25);border-radius:8px;font-size:0.75rem;color:var(--green);">
+            ✅ Image uploaded! URL saved automatically.
           </div>
         </div>
-        <!-- Upload progress bar -->
-        <div id="uploadProgressWrap" style="display:none;margin-top:8px;">
-          <div style="font-size:0.75rem;color:var(--muted);margin-bottom:4px;">Uploading… <span id="uploadPct">0</span>%</div>
-          <div style="background:var(--surface2);border-radius:4px;height:6px;overflow:hidden;">
-            <div id="uploadBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));width:0%;transition:width .3s;border-radius:4px;"></div>
-          </div>
-        </div>
+
         <!-- URL input box -->
         <div id="imgUrlTab" style="display:none;">
           <input class="finput" id="fImageUrl" placeholder="https://image-url.jpg" oninput="previewImageUrl()"/>
           <img id="imgUrlPreview" src="" style="max-height:100px;border-radius:8px;margin-top:8px;display:none;width:100%;object-fit:cover;"/>
         </div>
-        <!-- Hidden field stores the final image URL (from either path) -->
+
+        <!-- Hidden field stores the final image URL -->
         <input type="hidden" id="fImageFinal"/>
       </div>
 
@@ -827,9 +836,6 @@ import {
   getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
   onSnapshot, query, orderBy, serverTimestamp, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ── CONFIG ──
 const firebaseConfig = {
@@ -846,7 +852,6 @@ const firebaseConfig = {
 const app     = initializeApp(firebaseConfig);
 const auth    = getAuth(app);
 const db      = getFirestore(app);
-const storage = getStorage(app);
 
 // ── STATE ──
 let allPosts      = [];
@@ -1104,10 +1109,15 @@ window.previewImageUrl = function(){
   else{prev.style.display='none';}
 };
 
-window.handleFileSelect = function(e){
+// ── ImgBB API Key (ফ্রি — imgbb.com থেকে নিজের key দিন) ──
+const IMGBB_API_KEY = '44a4e1b2e4fde26397f11ee02c5c884f'; // 👈 imgbb.com/api থেকে ফ্রি key নিন
+
+window.handleFileSelect = async function(e){
   const file = e.target.files[0];
   if(!file) return;
-  if(file.size > 5*1024*1024){ showToast('Image too large. Max 5MB.','error'); return; }
+  if(file.size > 32*1024*1024){ showToast('Image too large. Max 32MB.','error'); return; }
+
+  // Preview locally first
   const reader = new FileReader();
   reader.onload = ev => {
     const prev = document.getElementById('imgFilePreview');
@@ -1116,30 +1126,64 @@ window.handleFileSelect = function(e){
     document.getElementById('uploadHint').style.display = 'none';
   };
   reader.readAsDataURL(file);
-  // Clear any previously stored URL so we know to upload on save
+
+  // Auto-upload to ImgBB immediately on file select
+  document.getElementById('imgbbSuccess').style.display = 'none';
   document.getElementById('fImageFinal').value = '__pending__';
+
+  try {
+    const url = await uploadToImgBB(file);
+    document.getElementById('fImageFinal').value = url;
+    document.getElementById('imgbbSuccess').style.display = 'block';
+    showToast('✅ Image uploaded!', 'success');
+  } catch(err) {
+    showToast('Image upload failed: ' + err.message, 'error');
+    document.getElementById('fImageFinal').value = '';
+  }
 };
 
-async function uploadImageFile(file){
-  return new Promise((resolve, reject)=>{
-    const ext  = file.name.split('.').pop();
-    const path = `post-images/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const storageRef = ref(storage, path);
-    const task = uploadBytesResumable(storageRef, file);
-    document.getElementById('uploadProgressWrap').style.display='block';
-    task.on('state_changed',
-      snap=>{
-        const pct = Math.round(snap.bytesTransferred/snap.totalBytes*100);
+async function uploadToImgBB(file){
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('key', IMGBB_API_KEY);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.imgbb.com/1/upload');
+
+    // Show progress bar
+    document.getElementById('uploadProgressWrap').style.display = 'block';
+    document.getElementById('uploadPct').textContent = '0';
+    document.getElementById('uploadBar').style.width = '0%';
+
+    xhr.upload.onprogress = (e) => {
+      if(e.lengthComputable){
+        const pct = Math.round((e.loaded / e.total) * 100);
         document.getElementById('uploadPct').textContent = pct;
-        document.getElementById('uploadBar').style.width = pct+'%';
-      },
-      err=>{ reject(err); },
-      async ()=>{
-        const url = await getDownloadURL(task.snapshot.ref);
-        document.getElementById('uploadProgressWrap').style.display='none';
-        resolve(url);
+        document.getElementById('uploadBar').style.width = pct + '%';
       }
-    );
+    };
+
+    xhr.onload = () => {
+      document.getElementById('uploadProgressWrap').style.display = 'none';
+      try {
+        const res = JSON.parse(xhr.responseText);
+        if(res.success && res.data && res.data.url){
+          resolve(res.data.display_url || res.data.url);
+        } else {
+          reject(new Error(res.error?.message || 'ImgBB upload failed'));
+        }
+      } catch(e){
+        reject(new Error('Invalid response from ImgBB'));
+      }
+    };
+
+    xhr.onerror = () => {
+      document.getElementById('uploadProgressWrap').style.display = 'none';
+      reject(new Error('Network error. Check internet connection.'));
+    };
+
+    xhr.send(formData);
   });
 }
 
@@ -1160,19 +1204,14 @@ window.savePost = async function(){
 
   showLoading(id?'Updating post…':'Saving post…');
 
-  // Resolve image URL — upload file if one was selected
+  // Image URL — already resolved by ImgBB upload on file select
   let imageUrl = document.getElementById('fImageFinal').value.trim();
-  const fileInput = document.getElementById('fImageFile');
-  if(fileInput.files && fileInput.files[0]){
-    try {
-      imageUrl = await uploadImageFile(fileInput.files[0]);
-    } catch(e){
-      hideLoading();
-      showToast('Image upload failed: '+e.message,'error');
-      return;
-    }
-  } else if(imageUrl === '__pending__'){
-    imageUrl = '';
+
+  // If still pending (upload in progress), warn user
+  if(imageUrl === '__pending__'){
+    hideLoading();
+    showToast('⏳ Image still uploading, please wait…','error');
+    return;
   }
 
   try {
