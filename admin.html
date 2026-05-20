@@ -564,29 +564,91 @@ input:checked+.toggle-slider::before{transform:translateX(20px);background:#fff;
 @keyframes spin{to{transform:rotate(360deg);}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.3);}}
 
-/* EXTRA IMAGE ROW */
-.extra-img-row{
-  display:flex;align-items:center;gap:8px;
+/* BLOCK EDITOR */
+.block-editor{
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;
+}
+.block-editor-toolbar{
+  display:flex;gap:6px;padding:8px 10px;
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.toolbar-btn{
+  display:flex;align-items:center;gap:5px;
+  background:var(--surface3);border:1px solid var(--border);
+  border-radius:7px;padding:5px 10px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:0.75rem;font-weight:600;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.toolbar-btn:hover{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);color:var(--accent);}
+.block-list{
+  display:flex;flex-direction:column;
+  padding:10px;gap:8px;min-height:80px;
+}
+.block-item{
+  position:relative;border-radius:9px;overflow:hidden;
+  animation:fadeUp .2s ease;
+}
+.block-item-controls{
+  position:absolute;top:6px;right:6px;
+  display:flex;gap:4px;z-index:2;opacity:0;
+  transition:opacity .15s;
+}
+.block-item:hover .block-item-controls{opacity:1;}
+.block-ctrl-btn{
+  background:rgba(7,9,13,0.85);border:1px solid var(--border2);
+  border-radius:5px;width:26px;height:26px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:12px;color:var(--muted);
+  transition:all .15s;
+}
+.block-ctrl-btn:hover{background:rgba(255,77,109,0.3);color:var(--red);}
+.block-ctrl-btn.move{color:var(--accent);}
+.block-ctrl-btn.move:hover{background:rgba(0,229,255,0.15);color:var(--accent);}
+.block-textarea{
+  width:100%;background:var(--surface2);
+  border:1px solid var(--border);border-radius:9px;
+  padding:10px 12px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;
+  outline:none;resize:vertical;min-height:80px;line-height:1.6;
+  transition:border-color .2s;
+}
+.block-textarea:focus{border-color:var(--accent);}
+.block-textarea::placeholder{color:var(--muted2);}
+.block-img-wrap{
   background:var(--surface2);border:1px solid var(--border);
-  border-radius:9px;padding:8px 10px;
+  border-radius:9px;overflow:hidden;
 }
-.extra-img-row input{
+.block-img-preview{
+  width:100%;max-height:200px;object-fit:cover;display:block;
+}
+.block-img-url-row{
+  display:flex;align-items:center;gap:6px;padding:8px 10px;
+  border-top:1px solid var(--border);
+}
+.block-img-url-input{
   flex:1;background:transparent;border:none;outline:none;
-  color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.83rem;
+  color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.75rem;
 }
-.extra-img-row input::placeholder{color:var(--muted2);}
-.extra-img-thumb{
-  width:44px;height:34px;border-radius:6px;object-fit:cover;
-  display:none;flex-shrink:0;
+.block-img-url-input::placeholder{color:var(--muted2);}
+.block-img-placeholder{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:24px;gap:6px;
+  background:var(--surface2);
 }
-.btn-rm-img{
-  background:rgba(255,77,109,0.12);border:none;
-  color:var(--red);border-radius:6px;
-  width:28px;height:28px;cursor:pointer;
-  font-size:14px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background .2s;
+.block-img-placeholder-icon{font-size:1.6rem;}
+.block-img-placeholder-text{font-size:0.75rem;color:var(--muted);}
+.block-img-upload-btn{
+  background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);
+  border-radius:7px;padding:5px 12px;color:var(--accent);
+  font-size:0.75rem;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:background .2s;
 }
-.btn-rm-img:hover{background:rgba(255,77,109,0.25);}
+.block-img-upload-btn:hover{background:rgba(0,229,255,0.2);}
+.block-empty-hint{
+  text-align:center;padding:20px;color:var(--muted2);font-size:0.8rem;
+}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px;}
@@ -732,21 +794,18 @@ input:checked+.toggle-slider::before{transform:translateX(20px);background:#fff;
       </div>
 
       <div class="frow" style="margin-top:16px">
-        <label class="flabel">Post Content</label>
-        <textarea class="ftextarea" id="fContent" placeholder="Write post content here…"></textarea>
-      </div>
-
-      <!-- ── EXTRA IMAGES ── -->
-      <div class="frow">
-        <label class="flabel">📸 Extra Images (content-এর নিচে দেখাবে)</label>
-        <div id="extraImgsWrap" style="display:flex;flex-direction:column;gap:8px;"></div>
-        <button type="button" onclick="addExtraImgRow()" style="
-          margin-top:8px;width:100%;padding:9px;
-          background:rgba(0,229,255,0.08);border:1px dashed rgba(0,229,255,0.3);
-          border-radius:9px;color:var(--accent);font-family:'DM Sans',sans-serif;
-          font-size:0.8rem;font-weight:600;cursor:pointer;transition:background .2s;
-        " onmouseover="this.style.background='rgba(0,229,255,0.15)'"
-           onmouseout="this.style.background='rgba(0,229,255,0.08)'">+ Add Image</button>
+        <label class="flabel">📝 Post Content <span style="font-size:0.65rem;color:var(--muted);font-weight:400;text-transform:none;">(text ও image যেকোনো ক্রমে)</span></label>
+        <div class="block-editor" id="blockEditor">
+          <div class="block-editor-toolbar">
+            <button type="button" class="toolbar-btn" onclick="addTextBlock()">✏️ Text Block</button>
+            <button type="button" class="toolbar-btn" onclick="addImageBlockUrl()">🔗 Image URL</button>
+            <button type="button" class="toolbar-btn" onclick="triggerBlockImgUpload()">📁 Upload Image</button>
+            <input type="file" id="blockImgFile" accept="image/*" style="display:none" onchange="handleBlockImgUpload(event)"/>
+          </div>
+          <div class="block-list" id="blockList">
+            <div class="block-empty-hint" id="blockEmptyHint">👆 উপরের বাটন দিয়ে Text বা Image block যোগ করুন</div>
+          </div>
+        </div>
       </div>
 
       <!-- ── CUSTOM BUTTON ── -->
@@ -1074,37 +1133,172 @@ window.toggleFeatured = async function(id, current){
 // ─────────────────────────────────────
 // DRAWER — NEW POST
 // ─────────────────────────────────────
-window.addExtraImgRow = function(url=''){
-  const wrap = document.getElementById('extraImgsWrap');
-  const idx  = Date.now();
-  const div  = document.createElement('div');
-  div.className = 'extra-img-row';
-  div.dataset.idx = idx;
-  div.innerHTML = `
-    <img class="extra-img-thumb" id="ethumb_${idx}" src=""/>
-    <input type="text" placeholder="https://image-url.jpg" value="${escHtml(url)}"
-      oninput="previewExtraThumb(this,'${idx}')"/>
-    <button type="button" class="btn-rm-img" onclick="this.parentElement.remove()">✕</button>
+// ─────────────────────────────────────
+// BLOCK EDITOR
+// ─────────────────────────────────────
+let _blockUploadCb = null; // callback when block image upload finishes
+
+function blockEditorUpdateHint(){
+  const list = document.getElementById('blockList');
+  const hint = document.getElementById('blockEmptyHint');
+  if(!hint) return;
+  hint.style.display = list.querySelectorAll('.block-item').length === 0 ? 'block' : 'none';
+}
+
+window.addTextBlock = function(value='', insertAfterEl=null){
+  const id = 'blk_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  const div = document.createElement('div');
+  div.className='block-item';
+  div.dataset.type='text';
+  div.dataset.id=id;
+  div.innerHTML=`
+    <div class="block-item-controls">
+      <button type="button" class="block-ctrl-btn move" title="Move up" onclick="moveBlockUp(this)">↑</button>
+      <button type="button" class="block-ctrl-btn move" title="Move down" onclick="moveBlockDown(this)">↓</button>
+      <button type="button" class="block-ctrl-btn" title="Delete" onclick="removeBlock(this)">✕</button>
+    </div>
+    <textarea class="block-textarea" placeholder="এখানে text লিখুন…" oninput="autoResizeBlock(this)">${escHtml(value)}</textarea>
   `;
-  wrap.appendChild(div);
-  if(url){
-    const th = document.getElementById('ethumb_'+idx);
-    th.src=url; th.style.display='block';
-  }
-};
-window.previewExtraThumb = function(inp, idx){
-  const th = document.getElementById('ethumb_'+idx);
-  if(inp.value.trim()){th.src=inp.value.trim();th.style.display='block';}
-  else{th.style.display='none';}
+  _insertBlock(div, insertAfterEl);
+  const ta = div.querySelector('textarea');
+  setTimeout(()=>{ autoResizeBlock(ta); ta.focus(); },50);
+  blockEditorUpdateHint();
 };
 
-function getExtraImgs(){
-  return [...document.querySelectorAll('#extraImgsWrap .extra-img-row input')]
-    .map(i=>i.value.trim()).filter(Boolean);
+window.addImageBlockUrl = function(url='', insertAfterEl=null){
+  const id = 'blk_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  const div = document.createElement('div');
+  div.className='block-item';
+  div.dataset.type='image';
+  div.dataset.id=id;
+  div.innerHTML=`
+    <div class="block-item-controls">
+      <button type="button" class="block-ctrl-btn move" title="Move up" onclick="moveBlockUp(this)">↑</button>
+      <button type="button" class="block-ctrl-btn move" title="Move down" onclick="moveBlockDown(this)">↓</button>
+      <button type="button" class="block-ctrl-btn" title="Delete" onclick="removeBlock(this)">✕</button>
+    </div>
+    <div class="block-img-wrap">
+      ${url
+        ? `<img class="block-img-preview" src="${escHtml(url)}" onerror="this.style.display='none'"/>`
+        : `<div class="block-img-placeholder">
+            <div class="block-img-placeholder-icon">🖼️</div>
+            <div class="block-img-placeholder-text">নিচে URL দিন বা ছবি আপলোড করুন</div>
+           </div>`
+      }
+      <div class="block-img-url-row">
+        <input class="block-img-url-input" type="text" placeholder="https://image-url.jpg" value="${escHtml(url)}"
+          oninput="onBlockImgUrlChange(this)"/>
+      </div>
+    </div>
+  `;
+  _insertBlock(div, insertAfterEl);
+  if(!url) setTimeout(()=>div.querySelector('.block-img-url-input').focus(),50);
+  blockEditorUpdateHint();
+};
+
+window.triggerBlockImgUpload = function(insertAfterEl=null){
+  _blockUploadCb = (url)=>addImageBlockUrl(url, insertAfterEl);
+  document.getElementById('blockImgFile').value='';
+  document.getElementById('blockImgFile').click();
+};
+
+window.handleBlockImgUpload = async function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 32*1024*1024){ showToast('Image too large. Max 32MB.','error'); return; }
+
+  showLoading('Uploading image…');
+  try{
+    const url = await uploadToImgBB(file);
+    hideLoading();
+    showToast('✅ Image uploaded!','success');
+    if(_blockUploadCb){ _blockUploadCb(url); _blockUploadCb=null; }
+    else addImageBlockUrl(url);
+  } catch(err){
+    hideLoading();
+    showToast('Upload failed: '+err.message,'error');
+  }
+};
+
+window.onBlockImgUrlChange = function(inp){
+  const wrap = inp.closest('.block-img-wrap');
+  let img = wrap.querySelector('.block-img-preview');
+  const placeholder = wrap.querySelector('.block-img-placeholder');
+  const url = inp.value.trim();
+  if(url){
+    if(placeholder) placeholder.style.display='none';
+    if(!img){
+      img = document.createElement('img');
+      img.className='block-img-preview';
+      img.onerror=()=>img.style.display='none';
+      img.onload=()=>img.style.display='block';
+      wrap.insertBefore(img, wrap.querySelector('.block-img-url-row'));
+    }
+    img.src=url; img.style.display='block';
+  } else {
+    if(img) img.style.display='none';
+    if(placeholder) placeholder.style.display='flex';
+  }
+};
+
+window.removeBlock = function(btn){
+  btn.closest('.block-item').remove();
+  blockEditorUpdateHint();
+};
+window.moveBlockUp = function(btn){
+  const item = btn.closest('.block-item');
+  const prev = item.previousElementSibling;
+  if(prev && !prev.id) item.parentElement.insertBefore(item, prev);
+};
+window.moveBlockDown = function(btn){
+  const item = btn.closest('.block-item');
+  const next = item.nextElementSibling;
+  if(next) item.parentElement.insertBefore(next, item);
+};
+window.autoResizeBlock = function(ta){
+  ta.style.height='auto';
+  ta.style.height=Math.max(80,ta.scrollHeight)+'px';
+};
+
+function _insertBlock(div, insertAfterEl){
+  const list = document.getElementById('blockList');
+  if(insertAfterEl){
+    insertAfterEl.after(div);
+  } else {
+    list.appendChild(div);
+  }
 }
-function setExtraImgs(arr){
-  document.getElementById('extraImgsWrap').innerHTML='';
-  (arr||[]).forEach(url=>addExtraImgRow(url));
+
+// Serialize blocks → array of {type, value/url}
+function getContentBlocks(){
+  const items = document.querySelectorAll('#blockList .block-item');
+  return [...items].map(item=>{
+    if(item.dataset.type==='text'){
+      return {type:'text', value: item.querySelector('textarea').value};
+    } else {
+      return {type:'image', url: item.querySelector('.block-img-url-input').value.trim()};
+    }
+  }).filter(b=> b.type==='text' ? b.value.trim() : b.url);
+}
+
+// Load blocks from saved data
+function setContentBlocks(blocks){
+  const list = document.getElementById('blockList');
+  // remove existing blocks (not hint)
+  list.querySelectorAll('.block-item').forEach(el=>el.remove());
+  (blocks||[]).forEach(b=>{
+    if(b.type==='image') addImageBlockUrl(b.url||'');
+    else addTextBlock(b.value||'');
+  });
+  blockEditorUpdateHint();
+}
+
+// Legacy: convert old plain content string + extraImages array → blocks
+function legacyToBlocks(content, extraImages){
+  const blocks = [];
+  if(content && content.trim()) blocks.push({type:'text', value:content});
+  (extraImages||[]).forEach(url=>{ if(url) blocks.push({type:'image',url}); });
+  return blocks;
 }
 
 window.openDrawer = function(){
@@ -1113,7 +1307,7 @@ window.openDrawer = function(){
   document.getElementById('fTitle').value='';
   document.getElementById('fCategory').value='';
   document.getElementById('fAuthor').value='';
-  document.getElementById('fContent').value='';
+  setContentBlocks([]);
   document.getElementById('fLink').value='';
   document.getElementById('fBtnText').value='';
   document.getElementById('fBtnLink').value='';
@@ -1124,7 +1318,6 @@ window.openDrawer = function(){
   document.getElementById('imgFilePreview').style.display='none';
   document.getElementById('uploadHint').style.display='block';
   document.getElementById('uploadProgressWrap').style.display='none';
-  setExtraImgs([]);
   switchImgTab('upload');
   document.getElementById('fFeatured').checked=false;
   document.getElementById('saveBtn').textContent='💾 Save Post';
@@ -1141,7 +1334,12 @@ window.editPost = function(id){
   document.getElementById('fTitle').value=p.title||'';
   document.getElementById('fCategory').value=p.category||'';
   document.getElementById('fAuthor').value=p.author||'';
-  document.getElementById('fContent').value=p.content||'';
+  // Load content blocks — support both new (contentBlocks) and legacy (content + extraImages)
+  if(p.contentBlocks && p.contentBlocks.length){
+    setContentBlocks(p.contentBlocks);
+  } else {
+    setContentBlocks(legacyToBlocks(p.content, p.extraImages));
+  }
   document.getElementById('fLink').value=p.link||'';
   document.getElementById('fBtnText').value=p.btnText||'';
   document.getElementById('fBtnLink').value=p.btnLink||'';
@@ -1150,7 +1348,6 @@ window.editPost = function(id){
   document.getElementById('fFeatured').checked=!!p.featured;
   document.getElementById('saveBtn').textContent='💾 Update Post';
   document.getElementById('uploadProgressWrap').style.display='none';
-  setExtraImgs(p.extraImages||[]);
   // If post has an image, show it in the URL tab
   if(p.imageUrl){
     switchImgTab('url');
@@ -1286,12 +1483,11 @@ window.savePost = async function(){
   const title    = document.getElementById('fTitle').value.trim();
   const category = document.getElementById('fCategory').value;
   const author   = document.getElementById('fAuthor').value.trim();
-  const content  = document.getElementById('fContent').value.trim();
+  const contentBlocks = getContentBlocks();
   const link     = document.getElementById('fLink').value.trim();
   const btnText  = document.getElementById('fBtnText').value.trim();
   const btnLink  = document.getElementById('fBtnLink').value.trim();
   const featured = document.getElementById('fFeatured').checked;
-  const extraImages = getExtraImgs();
 
   if(!title){ showToast('Title is required.','error'); return; }
   if(!category){ showToast('Please select a category.','error'); return; }
@@ -1309,7 +1505,7 @@ window.savePost = async function(){
   }
 
   try {
-    const data = {title,category,author,content,link,btnText,btnLink,imageUrl,featured,extraImages};
+    const data = {title,category,author,contentBlocks,link,btnText,btnLink,imageUrl,featured};
     if(id){
       await updateDoc(doc(db,'posts',id),{...data, updatedAt: serverTimestamp()});
       showToast('✅ Post updated successfully!','success');
