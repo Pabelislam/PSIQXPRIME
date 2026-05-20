@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PSIQXPRIMEHUB – Exclusive Deals & Offers</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Lora:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #dce8f5;
+    --surface: #ffffff;
+    --surface2: #f0f5fb;
+    --border: rgba(0,0,0,0.08);
+    --accent: #1a73e8;
+    --accent2: #e8420a;
+    --accent3: #7c3aed;
+    --text: #111827;
+    --muted: #6b7280;
+    --card-bg: #ffffff;
+    --featured-bg: #ffffff;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 6px 24px rgba(0,0,0,0.13);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Outfit',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:0 16px;
+    display:flex;align-items:center;justify-content:space-between;
+    height:56px;
+    overflow:hidden;
+    box-shadow:0 1px 4px rgba(0,0,0,0.06);
+  }
+  .logo{
+    font-family:'Outfit',sans-serif;
+    font-size:1.05rem;
+    font-weight:800;
+    letter-spacing:0.5px;
+    background:linear-gradient(135deg,var(--accent),var(--accent3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .nav-right{display:flex;align-items:center;gap:8px;min-width:0;}
+  .search-wrap{
+    position:relative;
+    min-width:0;
+  }
+  #searchInput{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:7px 32px 7px 14px;
+    color:var(--text);
+    font-family:'Outfit',sans-serif;
+    font-size:0.82rem;
+    width:140px;
+    outline:none;
+    transition:border .2s,width .3s;
+  }
+  #searchInput:focus{border-color:var(--accent);width:160px;}
+  #searchInput::placeholder{color:var(--muted);}
+  .search-icon{
+    position:absolute;right:10px;top:50%;transform:translateY(-50%);
+    color:var(--muted);font-size:14px;pointer-events:none;
+  }
+
+  /* ── HERO BANNER ── */
+  .hero{
+    position:relative;z-index:1;
+    padding:20px 16px 12px;
+    text-align:center;
+    display:none;
+  }
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(26,115,232,0.1);
+    border:1px solid rgba(26,115,232,0.2);
+    border-radius:20px;
+    padding:4px 14px;
+    font-size:0.72rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:16px;
+  }
+  .hero p{
+    color:var(--muted);
+    font-size:0.95rem;
+    max-width:420px;
+    margin:0 auto;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .cat-bar{
+    position:sticky;top:56px;z-index:90;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:0 16px;
+    display:flex;gap:4px;overflow-x:auto;
+    scrollbar-width:none;
+    box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  }
+  .cat-bar::-webkit-scrollbar{display:none;}
+  .cat-btn{
+    flex-shrink:0;
+    padding:10px 14px;
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-family:'Outfit',sans-serif;
+    font-size:0.8rem;
+    font-weight:600;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:all .2s;
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+  }
+  .cat-btn:hover{color:var(--text);}
+  .cat-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+  /* ── SECTION TITLES ── */
+  .section-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 16px 12px;
+    position:relative;z-index:1;
+  }
+  .section-title{
+    font-family:'Outfit',sans-serif;
+    font-size:1.1rem;
+    font-weight:700;
+    letter-spacing:.2px;
+    color:var(--text);
+  }
+  .view-all{
+    font-size:0.78rem;
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+    letter-spacing:.3px;
+    display:flex;align-items:center;gap:4px;
+    transition:opacity .2s;
+  }
+  .view-all:hover{opacity:.7;}
+
+  /* ── FEATURED LIST ── */
+  .featured-list{
+    padding:0 12px;
+    display:flex;flex-direction:column;gap:10px;
+    position:relative;z-index:1;
+  }
+  .featured-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px;
+    cursor:pointer;
+    transition:box-shadow .2s, transform .2s;
+    text-decoration:none;
+    color:inherit;
+    animation:fadeUp .4s ease both;
+    box-shadow:var(--shadow);
+  }
+  .featured-card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-hover);
+  }
+  .featured-img{
+    width:100px;height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+    background:var(--surface2);
+    border:2px solid var(--border);
+  }
+  .featured-img-placeholder{
+    width:100px;height:100px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#e0eaff,#d0d8ff);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem;flex-shrink:0;
+    border:2px solid var(--border);
+  }
+  .featured-meta{flex:1;min-width:0;}
+  .featured-title{
+    font-family:'Outfit',sans-serif;
+    font-size:0.95rem;
+    font-weight:700;
+    line-height:1.35;
+    color:var(--text);
+    margin-bottom:6px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .post-info{
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .post-info span{
+    font-size:0.72rem;color:var(--muted);
+    display:flex;align-items:center;gap:3px;
+  }
+  .badge{
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:4px;
+    font-size:0.62rem;
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+  .badge-gift{background:#111;color:#fff;}
+  .badge-giveaway{background:#111;color:#fff;}
+  .badge-game{background:#111;color:#fff;}
+  .badge-default{background:#111;color:#fff;}
+
+  /* ── GRID (Latest Posts) ── */
+  .posts-grid{
+    padding:0 12px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    position:relative;z-index:1;
+  }
+  @media(min-width:600px){.posts-grid{grid-template-columns:repeat(3,1fr);}}
+  .grid-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .2s, box-shadow .2s;
+    text-decoration:none;color:inherit;
+    animation:fadeUp .4s ease both;
+    box-shadow:var(--shadow);
+  }
+  .grid-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+  .grid-thumb{
+    width:100%;aspect-ratio:16/10;
+    object-fit:cover;
+    background:var(--surface2);
+    display:block;
+  }
+  .grid-thumb-placeholder{
+    width:100%;aspect-ratio:16/10;
+    background:linear-gradient(135deg,#e0eaff,#d0d8ff);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2rem;
+  }
+  .grid-body{padding:10px 10px 12px;}
+  .grid-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
+  .grid-title{
+    font-family:'Outfit',sans-serif;
+    font-size:0.85rem;
+    font-weight:700;
+    line-height:1.4;
+    color:var(--text);
+    margin-bottom:5px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .grid-meta{font-size:0.67rem;color:var(--muted);margin-top:2px;}
+
+  /* ── TICKER / TRENDING BAR ── */
+  .ticker-wrap{
+    position:relative;z-index:1;
+    background:#fff;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    overflow:hidden;
+    height:34px;
+    display:flex;align-items:center;
+    margin:10px 0;
+  }
+  .ticker-label{
+    flex-shrink:0;
+    padding:0 14px;
+    font-size:0.65rem;
+    letter-spacing:2px;
+    font-weight:700;
+    color:var(--accent2);
+    text-transform:uppercase;
+    border-right:1px solid var(--border);
+    background:#fff8f5;
+    height:100%;
+    display:flex;align-items:center;
+    z-index:2;
+  }
+  .ticker-track{
+    display:flex;
+    animation:ticker 30s linear infinite;
+    white-space:nowrap;
+  }
+  .ticker-item{
+    padding:0 28px;
+    font-size:0.78rem;
+    color:var(--muted);
+  }
+  .ticker-item span{color:var(--accent2);font-weight:600;}
+  @keyframes ticker{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+
+  /* ── LOADER / SKELETON ── */
+  .loader-wrap{
+    display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:14px;
+    padding:60px 20px;
+    position:relative;z-index:1;
+  }
+  .spinner{
+    width:36px;height:36px;
+    border:3px solid var(--border);
+    border-top-color:var(--accent);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loader-wrap p{font-size:0.82rem;color:var(--muted);}
+
+  .skeleton{
+    background:linear-gradient(90deg,#f0f4f8 25%,#e8edf2 50%,#f0f4f8 75%);
+    background-size:200% 100%;
+    animation:shimmer 1.4s infinite;
+    border-radius:6px;
+  }
+  @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+  /* ── EMPTY / ERROR ── */
+  .empty-state{
+    text-align:center;padding:60px 20px;
+    position:relative;z-index:1;
+  }
+  .empty-icon{font-size:3rem;margin-bottom:12px;}
+  .empty-state h3{font-family:'Outfit',sans-serif;font-size:1rem;margin-bottom:6px;}
+  .empty-state p{font-size:0.82rem;color:var(--muted);}
+
+  /* ── FULL PAGE POST VIEW ── */
+  .modal-bg{
+    position:fixed;inset:0;z-index:200;
+    background:#f4f8fd;
+    display:flex;flex-direction:column;
+    opacity:0;pointer-events:none;
+    transform:translateY(100%);
+    transition:opacity .35s ease, transform .4s cubic-bezier(.25,.8,.25,1);
+    overflow:hidden;
+  }
+  .modal-bg.open{
+    opacity:1;pointer-events:all;
+    transform:translateY(0);
+  }
+  .modal{
+    width:100%;
+    height:100%;
+    display:flex;flex-direction:column;
+    overflow-y:auto;
+    background:#f4f8fd;
+    overscroll-behavior:contain;
+  }
+  .modal-topbar{
+    position:sticky;top:0;z-index:10;
+    display:flex;align-items:center;gap:10px;
+    padding:12px 16px;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+    box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  }
+  .modal-back-btn{
+    display:flex;align-items:center;gap:6px;
+    background:var(--surface2);border:1px solid var(--border);
+    border-radius:8px;padding:7px 12px;
+    color:var(--text);cursor:pointer;font-size:0.8rem;
+    font-family:'Outfit',sans-serif;font-weight:600;
+    transition:border-color .2s,background .2s;
+    flex-shrink:0;
+  }
+  .modal-back-btn:hover{border-color:var(--accent);}
+  .modal-topbar-title{
+    font-family:'Outfit',sans-serif;font-size:0.85rem;
+    font-weight:700;color:var(--text);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    flex:1;
+  }
+  .modal-handle{display:none;}
+  .modal-close{display:none;}
+  .modal-img{
+    width:100%;max-height:260px;object-fit:cover;
+    display:block;
+  }
+  .modal-img-placeholder{
+    width:100%;height:200px;
+    background:linear-gradient(135deg,#e0eaff,#d0d8ff);
+    display:flex;align-items:center;justify-content:center;
+    font-size:4rem;
+  }
+  .modal-body{padding:20px 16px 50px;}
+  .modal-title{
+    font-family:'Outfit',sans-serif;
+    font-size:1.25rem;font-weight:800;
+    margin-bottom:12px;line-height:1.35;
+    color:var(--text);
+  }
+  .modal-content{
+    font-size:0.92rem;color:#374151;
+    line-height:1.85;
+    white-space:pre-wrap;
+    margin-top:16px;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+  }
+  .modal-info{
+    display:flex;flex-wrap:wrap;gap:8px;
+    margin:12px 0;padding:12px;
+    background:#fff;border-radius:12px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+  }
+  .modal-info-item{font-size:0.75rem;color:var(--muted);}
+  .modal-info-item b{color:var(--text);}
+  .modal-safe-bottom{height:env(safe-area-inset-bottom, 20px);}
+
+  /* ── FOOTER ── */
+  footer{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:24px 20px;
+    border-top:1px solid var(--border);
+    margin-top:32px;
+    background:#fff;
+  }
+  footer p{font-size:0.73rem;color:var(--muted);}
+  .footer-logo{
+    font-family:'Outfit',sans-serif;
+    font-size:1rem;font-weight:800;letter-spacing:1px;
+    background:linear-gradient(135deg,var(--accent),var(--accent3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:6px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(12px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ── PULL TO REFRESH indicator ── */
+  .refresh-bar{
+    position:fixed;top:0;left:0;right:0;
+    height:2px;z-index:999;
+    background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2));
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .4s;
+  }
+  .refresh-bar.loading{animation:progress 1.5s ease infinite;}
+  @keyframes progress{
+    0%{transform:scaleX(0);transform-origin:left;}
+    50%{transform:scaleX(0.7);transform-origin:left;}
+    100%{transform:scaleX(1);transform-origin:left;opacity:0;}
+  }
+
+  /* ── LIVE BADGE ── */
+  .live-dot{
+    display:inline-block;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--accent2);
+    animation:pulse 1.5s ease infinite;
+    margin-right:4px;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:.5;transform:scale(1.4);}
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#c5d0de;border-radius:4px;}
+
+  /* Extra imgs */
+  .extra-imgs-section{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;}
+  .extra-imgs-label{font-size:0.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+  .extra-imgs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .extra-imgs-grid img{width:100%;border-radius:10px;object-fit:cover;aspect-ratio:16/10;cursor:pointer;transition:transform .2s;background:var(--surface2);}
+  .extra-imgs-grid img:hover{transform:scale(1.02);}
+  .custom-btn-link{display:block;margin-top:16px;text-align:center;border-radius:12px;padding:14px;text-decoration:none;font-size:0.9rem;font-weight:700;letter-spacing:.5px;transition:opacity .2s;}
+  .custom-btn-link:hover{opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="refresh-bar" id="refreshBar"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="logo" href="#">PSIQXPRIMEHUB</a>
+  <div class="nav-right">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search posts…"/>
+      <span class="search-icon">⌕</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow"><span class="live-dot"></span> Live Deals & Offers</div>
+  <p>Discover exclusive gift cards, giveaways & gaming deals updated in real time.</p>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-bar" id="catBar">
+  <button class="cat-btn active" data-cat="all">All</button>
+  <!-- populated by JS -->
+</div>
+
+<!-- TRENDING TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">🔥 Hot</div>
+  <div style="overflow:hidden;flex:1;">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- LATEST POSTS -->
+<div class="section-head" id="latest">
+  <div class="section-title">Latest Posts</div>
+  <a class="view-all" href="#" id="viewAllBtn">View All →</a>
+</div>
+<div id="postsGrid" class="posts-grid">
+  <!-- populated -->
+</div>
+
+<div id="loadMoreWrap" style="display:none;text-align:center;padding:20px 20px 0;position:relative;z-index:1;">
+  <button id="loadMoreBtn" style="
+    background:#fff;border:1px solid var(--border);
+    color:var(--text);padding:10px 28px;border-radius:10px;
+    font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;
+    transition:box-shadow .2s,border-color .2s;
+    box-shadow:var(--shadow);
+  " onmouseover="this.style.borderColor='var(--accent)'"
+     onmouseout="this.style.borderColor='var(--border)'">
+    Load More
+  </button>
+</div>
+
+<!-- FEATURED POSTS -->
+<div class="section-head" style="margin-top:20px;">
+  <div class="section-title">Featured Posts</div>
+  <a class="view-all" href="#">All Posts →</a>
+</div>
+<div id="featuredList" class="featured-list">
+  <div class="loader-wrap"><div class="spinner"></div><p>Loading posts…</p></div>
+</div>
+
+<!-- POST FULL PAGE -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modal">
+    <div class="modal-topbar">
+      <button class="modal-back-btn" onclick="closeModalDirect()">← Back</button>
+      <div class="modal-topbar-title" id="modalTopTitle"></div>
+    </div>
+    <div id="modalContent"></div>
+    <div class="modal-safe-bottom"></div>
+  </div>
+</div>
+
+<!-- FULL IMAGE OVERLAY -->
+<div id="imgFullOverlay" onclick="closeImgFull()" style="
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,0.92);
+  align-items:center;justify-content:center;
+  padding:16px;cursor:zoom-out;
+">
+  <img id="imgFullSrc" src="" style="
+    max-width:100%;max-height:90vh;
+    border-radius:12px;object-fit:contain;
+    box-shadow:0 20px 60px rgba(0,0,0,.8);
+  "/>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PSIQXPRIMEHUB</div>
+  <p>© <span id="yr"></span> PSIQXPRIMEHUB. All rights reserved.</p>
+
+</footer>
+
+<!-- FIREBASE SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore, collection, query, orderBy, limit,
+    onSnapshot, where, getDocs, startAfter
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ── CONFIG ──
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXBwUX03jmf1-5R0czVtjqmgOPwPLh8xI",
+    authDomain: "psiqxprime.firebaseapp.com",
+    databaseURL: "https://psiqxprime-default-rtdb.firebaseio.com",
+    projectId: "psiqxprime",
+    storageBucket: "psiqxprime.firebasestorage.app",
+    messagingSenderId: "345771986982",
+    appId: "1:345771986982:web:57e641a039e23ad63916e7",
+    measurementId: "G-V2BDXC6WDZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // ── STATE ──
+  let allPosts      = [];
+  let filteredPosts = [];
+  let currentCat    = 'all';
+  let searchTerm    = '';
+  let lastDoc       = null;
+  let loadingMore   = false;
+  const PAGE_SIZE   = 9;
+
+  // ── DOM refs ──
+  const featuredList  = document.getElementById('featuredList');
+  const postsGrid     = document.getElementById('postsGrid');
+  const catBar        = document.getElementById('catBar');
+  const loadMoreWrap  = document.getElementById('loadMoreWrap');
+  const loadMoreBtn   = document.getElementById('loadMoreBtn');
+  const tickerTrack   = document.getElementById('tickerTrack');
+  const refreshBar    = document.getElementById('refreshBar');
+  const searchInput   = document.getElementById('searchInput');
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ── HELPERS ──
+  function categoryBadge(cat){
+    if(!cat) return `<span class="badge badge-default">POST</span>`;
+    const c=cat.toLowerCase();
+    if(c.includes('gift')) return `<span class="badge badge-gift">${cat}</span>`;
+    if(c.includes('giveaway')||c.includes('reward')) return `<span class="badge badge-giveaway">${cat}</span>`;
+    if(c.includes('game')||c.includes('xbox')||c.includes('ps')||c.includes('nintendo')||c.includes('steam'))
+      return `<span class="badge badge-game">${cat}</span>`;
+    return `<span class="badge badge-default">${cat}</span>`;
+  }
+
+  function timeAgo(ts){
+    if(!ts) return '';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const diff = Math.floor((Date.now()-d)/1000);
+    if(diff<60) return 'just now';
+    if(diff<3600) return Math.floor(diff/60)+'m ago';
+    if(diff<86400) return Math.floor(diff/3600)+'h ago';
+    return d.toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'});
+  }
+
+  function readTime(content){
+    if(!content) return '3 min read';
+    const words = content.trim().split(/\s+/).length;
+    return Math.max(1,Math.ceil(words/200))+' min read';
+  }
+
+  function imgOrPlaceholder(imageUrl, cls, emoji='🎁'){
+    if(imageUrl){
+      const placeholderCls = cls === 'featured-img' ? 'featured-img-placeholder'
+                           : cls === 'grid-thumb'    ? 'grid-thumb-placeholder'
+                           : cls + '-placeholder';
+      return `<img class="${cls}" src="${imageUrl}" onerror="this.outerHTML='<div class=\\'${placeholderCls}\\'>${emoji}</div>'" loading="lazy"/>`;
+    }
+    const placeholderCls = cls === 'featured-img' ? 'featured-img-placeholder'
+                         : cls === 'grid-thumb'    ? 'grid-thumb-placeholder'
+                         : cls + '-placeholder';
+    return `<div class="${placeholderCls}">${emoji}</div>`;
+  }
+
+  function getEmoji(cat){
+    if(!cat) return '🎁';
+    const c=cat.toLowerCase();
+    if(c.includes('xbox')) return '🎮';
+    if(c.includes('ps')||c.includes('playstation')) return '🕹️';
+    if(c.includes('steam')) return '🖥️';
+    if(c.includes('nintendo')) return '🍄';
+    if(c.includes('walmart')) return '🛒';
+    if(c.includes('costco')) return '🏪';
+    if(c.includes('google')) return '▶️';
+    if(c.includes('giveaway')||c.includes('reward')) return '💰';
+    return '🎁';
+  }
+
+  // ── RENDER FEATURED ──
+  function renderFeatured(posts){
+    const featured = posts.filter(p=>p.featured);
+    if(featured.length===0){
+      featuredList.innerHTML=`<div class="empty-state">
+        <div class="empty-icon">📌</div>
+        <h3>No Featured Posts</h3>
+        <p>Admin can mark posts as featured from the panel.</p>
+      </div>`;
+      return;
+    }
+    featuredList.innerHTML = featured.map((p,i)=>`
+      <a class="featured-card" style="animation-delay:${i*0.08}s" onclick="openPost('${p.id}')">
+        ${imgOrPlaceholder(p.imageUrl, 'featured-img', getEmoji(p.category))}
+        <div class="featured-meta">
+          <div class="featured-title">${p.title||'Untitled'}</div>
+          <div class="post-info">
+            <span style="color:var(--muted);font-size:0.7rem;">👤 ${p.author||'Maruf Hossen'}</span>
+            <span style="color:var(--muted);font-size:0.7rem;">📅 ${timeAgo(p.createdAt)}</span>
+          </div>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  // ── RENDER GRID ──
+  function renderGrid(posts, append=false){
+    if(!append){
+      postsGrid.innerHTML='';
+    }
+    if(posts.length===0 && !append){
+      postsGrid.innerHTML=`<div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">🔍</div>
+        <h3>No Posts Found</h3>
+        <p>${searchTerm ? 'Try a different search.' : 'Posts will appear here once added from admin panel.'}</p>
+      </div>`;
+      loadMoreWrap.style.display='none';
+      return;
+    }
+    posts.forEach((p,i)=>{
+      const card=document.createElement('a');
+      card.className='grid-card';
+      card.style.animationDelay=`${(i%PAGE_SIZE)*0.06}s`;
+      card.onclick=()=>openPost(p.id);
+      card.innerHTML=`
+        ${imgOrPlaceholder(p.imageUrl, 'grid-thumb', getEmoji(p.category))}
+        <div class="grid-body">
+          <div class="grid-badges">${categoryBadge(p.category||'Post')}</div>
+          <div class="grid-title">${p.title||'Untitled'}</div>
+          <div class="grid-meta">${readTime(p.content)}</div>
+          <div class="grid-meta" style="margin-top:3px;">${p.title ? (p.author||'Maruf Hossen') : ''} · ${timeAgo(p.createdAt)}</div>
+        </div>
+      `;
+      postsGrid.appendChild(card);
+    });
+  }
+
+  // ── RENDER TICKER ──
+  function renderTicker(posts){
+    if(!posts.length){
+      tickerTrack.innerHTML='<div class="ticker-item">No posts yet — check back soon!</div>';
+      return;
+    }
+    const html = posts.slice(0,12).map(p=>`
+      <div class="ticker-item"><span>🔥</span> ${p.title||'Post'}</div>
+    `).join('');
+    tickerTrack.innerHTML = html+html; // duplicate for seamless loop
+  }
+
+  // ── CATEGORIES ──
+  function buildCategoryTabs(posts){
+    const cats=['all',...new Set(posts.map(p=>p.category).filter(Boolean))];
+    catBar.innerHTML = cats.map(c=>`
+      <button class="cat-btn${c==='all'&&currentCat==='all'?' active':''}" data-cat="${c}" onclick="filterCat('${c}')">
+        ${c==='all'?'All':c}
+      </button>
+    `).join('');
+  }
+
+  // ── FILTER ──
+  window.filterCat = function(cat){
+    currentCat=cat;
+    document.querySelectorAll('.cat-btn').forEach(b=>{
+      b.classList.toggle('active',b.dataset.cat===cat);
+    });
+    applyFilters();
+  };
+
+  function applyFilters(){
+    let posts=[...allPosts];
+    if(currentCat!=='all') posts=posts.filter(p=>p.category===currentCat);
+    if(searchTerm) posts=posts.filter(p=>
+      (p.title||'').toLowerCase().includes(searchTerm)||
+      (p.content||'').toLowerCase().includes(searchTerm)||
+      (p.category||'').toLowerCase().includes(searchTerm)
+    );
+    filteredPosts=posts;
+    renderGrid(filteredPosts.slice(0,PAGE_SIZE));
+    loadMoreWrap.style.display = filteredPosts.length>PAGE_SIZE ? 'block':'none';
+  }
+
+  // ── SEARCH ──
+  searchInput.addEventListener('input',e=>{
+    searchTerm=e.target.value.toLowerCase().trim();
+    applyFilters();
+  });
+
+  // ── LOAD MORE ──
+  let shownCount = PAGE_SIZE;
+  loadMoreBtn.addEventListener('click',()=>{
+    shownCount+=PAGE_SIZE;
+    renderGrid(filteredPosts.slice(0,shownCount));
+    loadMoreWrap.style.display = shownCount<filteredPosts.length?'block':'none';
+  });
+
+  // ── MODAL ──
+  window.openPost = function(id){
+    const p = allPosts.find(x=>x.id===id);
+    if(!p) return;
+    const mc=document.getElementById('modalContent');
+    // Set topbar title
+    document.getElementById('modalTopTitle').textContent = p.title||'Post';
+
+    // Extra images gallery HTML
+    let extraImgsHtml = '';
+    if(p.extraImages && p.extraImages.length > 0){
+      extraImgsHtml = `
+        <div class="extra-imgs-section">
+          <div class="extra-imgs-label">📸 More Images</div>
+          <div class="extra-imgs-grid">
+            ${p.extraImages.map(url=>`
+              <img src="${url}" loading="lazy"
+                onerror="this.style.display='none'"
+                onclick="openImgFull('${url}')"/>
+            `).join('')}
+          </div>
+        </div>`;
+    }
+
+    // Custom button HTML
+    let customBtnHtml = '';
+    if(p.btnText && p.btnLink){
+      customBtnHtml = `<a href="${p.btnLink}" target="_blank" rel="noopener" class="custom-btn-link"
+        style="background:linear-gradient(135deg,var(--accent2),var(--accent3));color:#fff;">
+        ${p.btnText}
+      </a>`;
+    }
+
+    // Default deal link
+    let dealLinkHtml = '';
+    if(p.link){
+      dealLinkHtml = `<a href="${p.link}" target="_blank" rel="noopener" style="
+        display:block;margin-top:16px;text-align:center;
+        background:linear-gradient(135deg,var(--accent),var(--accent3));
+        color:#000;font-weight:700;padding:14px;border-radius:12px;
+        text-decoration:none;font-size:0.9rem;letter-spacing:.5px;
+      ">🔗 View Deal →</a>`;
+    }
+
+    mc.innerHTML=`
+      ${imgOrPlaceholder(p.imageUrl, 'modal-img', getEmoji(p.category))}
+      <div class="modal-body">
+        <div class="grid-badges" style="margin-bottom:12px">${categoryBadge(p.category||'Post')}</div>
+        <div class="modal-title">${p.title||'Untitled'}</div>
+        <div class="modal-info">
+          ${p.author?`<div class="modal-info-item">✍️ <b>${p.author}</b></div>`:''}
+          <div class="modal-info-item">🕐 <b>${timeAgo(p.createdAt)}</b></div>
+          <div class="modal-info-item">📖 <b>${readTime(p.content)}</b></div>
+        </div>
+        <div class="modal-content">${(p.content||'No content available.').replace(/</g,'&lt;')}</div>
+        ${extraImgsHtml}
+        ${customBtnHtml}
+        ${dealLinkHtml}
+      </div>
+    `;
+    // Scroll modal to top
+    document.getElementById('modal').scrollTop = 0;
+    document.getElementById('modalBg').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+
+  // Full-screen image viewer
+  window.openImgFull = function(url){
+    const overlay = document.getElementById('imgFullOverlay');
+    document.getElementById('imgFullSrc').src = url;
+    overlay.style.display='flex';
+    document.body.style.overflow='hidden';
+  };
+  window.closeImgFull = function(){
+    document.getElementById('imgFullOverlay').style.display='none';
+  };
+
+  window.closeModal=function(e){
+    // No-op: full page, use back button
+  };
+  window.closeModalDirect=function(){
+    document.getElementById('modalBg').classList.remove('open');
+    document.body.style.overflow='';
+  };
+
+  // Back button on Android/browser
+  window.addEventListener('popstate', function(){
+    if(document.getElementById('modalBg').classList.contains('open')){
+      closeModalDirect();
+    }
+  });
+
+  // ── REALTIME LISTENER ──
+  function startListen(){
+    refreshBar.classList.add('loading');
+    const q=query(
+      collection(db,'posts'),
+      orderBy('createdAt','desc'),
+      limit(50)
+    );
+    onSnapshot(q, snap=>{
+      refreshBar.classList.remove('loading');
+      allPosts = snap.docs.map(d=>({id:d.id,...d.data()}));
+      if(allPosts.length===0){
+        featuredList.innerHTML=`<div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <h3>No Posts Yet</h3>
+          <p>Add posts from the Admin Panel to see them here.</p>
+        </div>`;
+        postsGrid.innerHTML='';
+        renderTicker([]);
+        return;
+      }
+      renderFeatured(allPosts);
+      buildCategoryTabs(allPosts);
+      renderTicker(allPosts);
+      shownCount=PAGE_SIZE;
+      applyFilters();
+    }, err=>{
+      refreshBar.classList.remove('loading');
+      console.error('Firestore error:',err);
+      featuredList.innerHTML=`<div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>Connection Error</h3>
+        <p>Could not load posts. Check your internet connection.</p>
+      </div>`;
+    });
+  }
+
+  startListen();
+</script>
+</body>
+</html>
