@@ -46,37 +46,41 @@
     background:rgba(10,12,16,0.85);
     backdrop-filter:blur(20px);
     border-bottom:1px solid var(--border);
-    padding:0 20px;
+    padding:0 16px;
     display:flex;align-items:center;justify-content:space-between;
-    height:62px;
+    height:56px;
+    overflow:hidden;
   }
   .logo{
     font-family:'Syne',sans-serif;
-    font-size:1.3rem;
+    font-size:1.1rem;
     font-weight:800;
-    letter-spacing:1px;
+    letter-spacing:0.5px;
     background:linear-gradient(135deg,var(--accent),var(--accent3));
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     background-clip:text;
     text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
   }
-  .nav-right{display:flex;align-items:center;gap:12px;}
+  .nav-right{display:flex;align-items:center;gap:8px;min-width:0;}
   .search-wrap{
     position:relative;
+    min-width:0;
   }
   #searchInput{
     background:var(--surface2);
     border:1px solid var(--border);
     border-radius:8px;
-    padding:7px 36px 7px 12px;
+    padding:7px 32px 7px 10px;
     color:var(--text);
     font-family:'DM Sans',sans-serif;
-    font-size:0.85rem;
-    width:180px;
+    font-size:0.82rem;
+    width:140px;
     outline:none;
     transition:border .2s,width .3s;
   }
-  #searchInput:focus{border-color:var(--accent);width:220px;}
+  #searchInput:focus{border-color:var(--accent);width:160px;}
   #searchInput::placeholder{color:var(--muted);}
   .search-icon{
     position:absolute;right:10px;top:50%;transform:translateY(-50%);
@@ -103,14 +107,17 @@
   }
   .hero h1{
     font-family:'Syne',sans-serif;
-    font-size:clamp(1.8rem,6vw,3rem);
+    font-size:clamp(1.4rem,5vw,2.4rem);
     font-weight:800;
-    letter-spacing:1px;
-    line-height:1.1;
+    letter-spacing:0px;
+    line-height:1.2;
+    word-break:break-word;
+    overflow-wrap:break-word;
     background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--accent3) 100%);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     background-clip:text;
     margin-bottom:12px;
+    padding:0 4px;
   }
   .hero p{
     color:var(--muted);
