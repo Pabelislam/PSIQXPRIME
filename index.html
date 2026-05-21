@@ -584,12 +584,12 @@
 <!-- POST FULL PAGE -->
 <div class="modal-bg" id="modalBg">
   <div class="modal" id="modal">
+    <!-- ADSTERRA TOP BANNER — topbar এর উপরে -->
+    <div id="adModalTop" style="text-align:center;width:100%;background:var(--bg);"></div>
     <div class="modal-topbar">
       <button class="modal-back-btn" onclick="closeModalDirect()">← Back</button>
       <div class="modal-topbar-title" id="modalTopTitle"></div>
     </div>
-    <!-- ADSTERRA TOP BANNER -->
-    <div id="adModalTop" style="text-align:center;padding:8px 12px 0;min-height:0;"></div>
     <div id="modalContent"></div>
     <!-- ADSTERRA BOTTOM BANNER -->
     <div id="adModalBottom" style="text-align:center;padding:0 12px 12px;min-height:0;"></div>
@@ -952,8 +952,11 @@
     document.getElementById('modal').scrollTop = 0;
     document.getElementById('modalBg').classList.add('open');
     document.body.style.overflow='hidden';
-    // Inject post banner ads
-    setTimeout(()=>{ if(window.injectPostAds) window.injectPostAds(); }, 300);
+    // Reset & re-inject post banner ads every time
+    window._adBannersInjected = false;
+    document.getElementById('adModalTop').innerHTML = '';
+    document.getElementById('adModalBottom').innerHTML = '';
+    setTimeout(()=>{ if(window.injectPostAds) window.injectPostAds(); }, 400);
   };
 
   // Full-screen image viewer
